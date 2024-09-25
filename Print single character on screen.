@@ -1,0 +1,30 @@
+ORG 100h           ; Origin, program starts at 100h (COM file format)
+
+MOV AH, 09h        
+LEA DX, inputMsg   
+INT 21h            
+
+MOV AH, 01h        ; Function 01h of INT 21h is used to read a character
+INT 21h 
+MOV DL, AL 
+mov Cl,Dl           ; Get the character, stored in AL
+
+; Print "You entered: " to the screen
+LEA DX, outputMsg       ;Load the address of the output message into DX
+MOV AH, 09h        ; Function 09h of INT 21h is used to print a string  ;
+INT 21h            ; Call DOS interrupt to print the string
+
+
+MOV DL, CL         
+MOV AH, 02h        
+INT 21h 
+JMP endprogram           
+
+; Terminate the program 
+endprogram:
+MOV AH, 4Ch        ; Function 4Ch of INT 21h terminates the program
+INT 21h            ; Call DOS interrupt to exit
+
+inputMsg DB 'Enter a character: $'  
+outputMsg DB 0Dh, 0Ah, 'You entered: $'       
+END
